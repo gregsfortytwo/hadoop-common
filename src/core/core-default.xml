@@ -141,6 +141,12 @@
 </property>
 
 <property>
+  <name>fs.ceph.impl</name>
+  <value>org.apache.hadoop.fs.ceph.CephFileSystem</value>
+  <description>The FileSystem for ceph: uris.</description>
+</property>
+
+<property>
   <name>fs.hftp.impl</name>
   <value>org.apache.hadoop.hdfs.HftpFileSystem</value>
 </property>
