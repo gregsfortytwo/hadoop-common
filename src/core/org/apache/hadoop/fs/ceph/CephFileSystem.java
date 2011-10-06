@@ -40,7 +40,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.util.Progressable;
 import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FsStatus;
 import org.apache.hadoop.fs.CreateFlag;
 
 
@@ -785,40 +784,6 @@ public class CephFileSystem extends FileSystem {
         "getFileBlockLocations:return with " + locations.length + " locations",
         ceph.DEBUG);
     return locations;
-  }
-
-  /**
-   * Get usage statistics on the Ceph filesystem.
-   * @param path A path to the partition you're interested in.
-   * Ceph doesn't partition, so this is ignored.
-   * @return FsStatus reporting capacity, usage, and remaining space.
-   * @throws IOException if initialize() hasn't been called, or the
-   * stat somehow fails.
-   */
-  @Override
-  public FsStatus getStatus(Path path) throws IOException {
-    if (!initialized) {
-      throw new IOException(
-          "You have to initialize the "
-              + "CephFileSystem before calling other methods.");
-    }
-    ceph.debug("getStatus:enter with path " + path, ceph.DEBUG);
-    Path abs_path = makeAbsolute(path);
-
-    // currently(Ceph .16) Ceph actually ignores the path
-    // but we still pass it in; if Ceph stops ignoring we may need more
-    // error-checking code.
-    CephStat ceph_stat = new CephStat();
-
-    ceph.debug("getStatus:calling ceph_statfs from Java", ceph.TRACE);
-    int result = ceph.ceph_statfs(abs_path.toString(), ceph_stat);
-
-    if (result != 0) {
-      throw new IOException(
-          "Somehow failed to statfs the Ceph filesystem. Error code: " + result);
-    }
-    ceph.debug("getStatus:exit successfully", ceph.DEBUG);
-    return new FsStatus(ceph_stat.capacity, ceph_stat.used, ceph_stat.remaining);
   }
 
   /**
