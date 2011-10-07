@@ -30,7 +30,6 @@ import java.lang.Math;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.BlockLocation;
-import org.apache.hadoop.fs.FileAlreadyExistsException;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -40,7 +39,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.util.Progressable;
 import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.CreateFlag;
 
 
 /**
@@ -329,7 +327,7 @@ public class CephFileSystem extends FileSystem {
           "mkdirs: make directory " + abs_path + "Failing with result " + result,
           ceph.WARN);
       if (ceph.ENOTDIR == result) {
-        throw new FileAlreadyExistsException("Parent path is not a directory");
+        throw new IOException("Parent path is not a directory");
       }
       return false;
     } else {
@@ -517,8 +515,8 @@ public class CephFileSystem extends FileSystem {
    * Create a new file and open an FSDataOutputStream that's connected to it.
    * @param path The file to create.
    * @param permission The permissions to apply to the file.
-   * @param flag If CreateFlag.OVERWRITE, overwrite any existing
-   * file with this name; otherwise don't.
+   * @param overwrite If true, overwrite any existing file with
+	 * this name; otherwise don't.
    * @param bufferSize Ceph does internal buffering, but you can buffer
    *   in the Java code too if you like.
    * @param replication Ignored by Ceph. This can be
@@ -535,7 +533,6 @@ public class CephFileSystem extends FileSystem {
   public FSDataOutputStream create(Path path,
       FsPermission permission,
       boolean overwrite,
-      // boolean overwrite,
       int bufferSize,
       short replication,
       long blockSize,
@@ -785,6 +782,10 @@ public class CephFileSystem extends FileSystem {
         ceph.DEBUG);
     return locations;
   }
+
+	public boolean delete(Path path) throws IOException {
+		return delete(path, false);
+	}
 
   /**
    * Delete the given path, and optionally its children.

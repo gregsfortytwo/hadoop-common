@@ -31,10 +31,8 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.BlockLocation;
-import org.apache.hadoop.fs.FileAlreadyExistsException;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FsStatus;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
@@ -221,12 +219,12 @@ class CephFaker extends CephFS {
       if (localFS.mkdirs(new Path(path), new FsPermission((short) mode))) {
         return 0;
       }
-    } catch (FileAlreadyExistsException fe) {
-      return ENOTDIR;
     } catch (IOException e) {}
-    if (ceph_isdirectory(path)) {
+    if (ceph_isdirectory(path)) { // apparently it already existed
       return -EEXIST;
-    } // apparently it already existed
+    } else if (ceph_isfile(path)) {
+			return -ENOTDIR;
+		}
     return -1;
   }
 
