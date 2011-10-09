@@ -341,19 +341,6 @@ class CephFaker extends CephFS {
     return ret;
   }
 
-  protected int ceph_statfs(String pth, CephFileSystem.CephStat fill) {
-    pth = prepare_path(pth);
-    try {
-      FsStatus stat = localFS.getStatus();
-
-      fill.capacity = stat.getCapacity();
-      fill.used = stat.getUsed();
-      fill.remaining = stat.getRemaining();
-      return 0;
-    } catch (Exception e) {}
-    return -1; // failure;
-  }
-
   protected int ceph_replication(String path) {
     path = prepare_path(path);
     int ret = -1; // -1 for failure

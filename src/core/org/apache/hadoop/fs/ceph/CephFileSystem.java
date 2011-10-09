@@ -961,13 +961,4 @@ public class CephFileSystem extends FileSystem {
 
     public Stat() {}
   }
-
-
-  static class CephStat {
-    public long capacity;
-    public long used;
-    public long remaining;
-
-    public CephStat() {}
-  }
 }
