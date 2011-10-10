@@ -10,22 +10,10 @@
   </property>
   <property>
     <name>fs.ceph.monAddr</name>
-    <value>10.0.1.205:6789</value>
+    <value>10.3.14.204:6789</value>
   </property>
   <property>
     <name>fs.ceph.libDir</name>
-    <value>/usr/local/lib</value>
-  </property>
-  <property>
-    <name>fs.ceph.debug</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>fs.ceph.clientDebug</name>
-    <value>10</value>
-  </property>
-  <property>
-    <name>fs.ceph.commandLine</name>
-    <value> --debug=10</value>
+    <value>/tmp/cephtest/binary/usr/local/lib</value>
   </property>
 </configuration>
