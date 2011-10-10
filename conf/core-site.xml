@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+  <property>
+    <name>fs.default.name</name>
+    <value>ceph://null</value>
+  </property>
+  <property>
+    <name>fs.ceph.monAddr</name>
+    <value>10.0.1.205:6789</value>
+  </property>
+  <property>
+    <name>fs.ceph.libDir</name>
+    <value>/usr/local/lib</value>
+  </property>
+  <property>
+    <name>fs.ceph.debug</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>fs.ceph.clientDebug</name>
+    <value>10</value>
+  </property>
+  <property>
+    <name>fs.ceph.commandLine</name>
+    <value> --debug=10</value>
+  </property>
+</configuration>
